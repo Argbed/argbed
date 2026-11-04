@@ -1,0 +1,51 @@
+# Copy to build.conf and edit. Sourced by build.sh; environment variables of
+# the same name override these values.
+#
+# Hostname: letters/digits/hyphens, max 63 chars.
+# Usernames: ^[a-z_][a-z0-9_-]{0,30}$ and must differ; avoid system names
+# (bin, daemon, mail, ...). The admin user gets wheel/sudo; the desktop user
+# autostarts sway on tty1.
+
+KS_HOSTNAME=laptop
+KS_ADMIN_USER=admin
+KS_DESKTOP_USER=me
+
+# System timezone, a name under /usr/share/zoneinfo (default: UTC).
+#KS_TIMEZONE=Europe/Berlin
+
+# Firmware for THIS machine's hardware, space-separated. Fedora ships
+# vendor firmware as packages that linux-firmware at most recommends,
+# and this kickstart installs no weak dependency: a device whose
+# package is not named here runs without firmware (no WiFi, no GPU
+# acceleration, no Bluetooth, no SOF sound, factory CPU microcode).
+#   GPU:        amd-gpu-firmware intel-gpu-firmware nvidia-gpu-firmware
+#   WiFi/BT:    iwlwifi-mvm-firmware iwlwifi-dvm-firmware (Intel)
+#               atheros-firmware (Qualcomm/Atheros) realtek-firmware
+#               brcmfmac-firmware (Broadcom) mt7xxx-firmware (MediaTek)
+#               tiwilink-firmware nxpwireless-firmware
+#   WWAN:       qcom-wwan-firmware
+#   Audio:      alsa-sof-firmware (Intel SOF DSP laptops)
+#               cirrus-audio-firmware intel-audio-firmware
+#   CPU:        microcode_ctl (Intel) amd-ucode-firmware (AMD)
+# After the first boot, "journalctl -k | grep -i firmware" names anything
+# the kernel asked for and did not find.
+#KS_FIRMWARE="microcode_ctl intel-gpu-firmware iwlwifi-mvm-firmware"
+
+# Resolvers of the installed system and of the installer, IPv4, comma and
+# space separated; the firewall accepts port 53 to these only (default:
+# Cloudflare's "1.1.1.1, 1.0.0.1").
+#KS_RESOLVERS="9.9.9.9, 149.112.112.112"
+
+# Firmware boot-entry label (default: "Fedora Linux"); it also names this
+# install's Secure Boot signing key in the firmware's key list.
+# It is stored in motherboard NVRAM and VISIBLE to anyone at the boot menu
+# before any password. The default is deliberately generic, with nothing
+# of this machine in it, and safe to reuse identically on every disk:
+# booting never depends on the label. Install-time cleanup matches entries
+# by GPT partition UUID only (previous installs of the chosen disk +
+# anaconda's grub entry); other disks' entries are never touched, attached
+# or unplugged.
+# A distinct label is needed only to tell entries apart; it stays neutral,
+# meaningful to the owner and generic to an observer.
+# Allowed: letters, digits, space, ()._-  max 40 chars.
+#KS_BOOT_LABEL="Fedora A"

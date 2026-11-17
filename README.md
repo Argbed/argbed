@@ -252,11 +252,11 @@ Optional modules:
   split or double hop: recipes in "VPN" below.
 - 730 screenshots and screen sharing for sway.
 - 740 playerctl media keys.
-- 820 chromium, hardened by managed policy like Firefox plus two launch
-  switches in Fedora's `chromium.conf`: telemetry, sync, autofill, spell
-  check, JIT/optimizer, ad auction APIs and background mode off,
-  third-party cookies blocked, HTTPS-only, DuckDuckGo search, DNS over
-  HTTPS (DoH) off.
+- 820 chromium, hardened by managed policy like Firefox plus features
+  disabled in Fedora's `chromium.conf`: telemetry, sync, autofill, spell
+  check, JIT/optimizer, ad auction APIs and background mode off, DRM off
+  for new profiles, third-party cookies blocked, HTTPS-only, DuckDuckGo
+  search, DNS over HTTPS (DoH) off.
 - 830 mpv with RPM Fusion's libavcodec-freeworld, the H.264/HEVC
   decoders Fedora's ffmpeg-free lacks.
 - 840 freerdp.
@@ -522,12 +522,11 @@ ports there, scoped to the tunnel, as in `oifname "tun0" ip daddr
 ## Verification status
 
 Every module has been through a real installation except the optional
-510, 560 and 570, which have not been installed on hardware: 510 and
-560 pass the build, `ksvalidator` and the dependency resolution below;
-570 installs through dnf in `%post` (as 830 and 850 do), so `verify.sh`
-never sees its packages and only the build and `ksvalidator` cover it.
-Edits made after an install are covered by the build, `ksvalidator` and
-`tests.sh` until the next one.
+510 and 560, which have not been installed on hardware and pass the
+build, `ksvalidator` and the dependency resolution below. 570 installs
+through dnf in `%post` (as 830 and 850 do), so `verify.sh` never sees
+its packages. Edits made after an install are covered by the build,
+`ksvalidator` and `tests.sh` until the next one.
 
 Checked against live Fedora repos (dnf5 `--installroot` dry run, weak deps
 off): the full module set resolves to a ~670-package closure with no
@@ -647,9 +646,10 @@ need, by name, to the right module.
   protection off by policy. Both search with DuckDuckGo, fixed by policy.
   Chromium's spell check is off because its dictionaries come only from
   Google; Firefox's DRM is off and locked because its Widevine module
-  would be fetched from Google. 820 edits Fedora's `chromium.conf`, a
-  noreplace config file, so Fedora's later changes to it arrive as
-  `.rpmnew`. Measured with Firefox 159 and Chromium 156 on fresh
+  would be fetched from Google. Chromium's DRM is off for new profiles
+  and changeable, since Chromium has no policy for it. 820 edits Fedora's
+  `chromium.conf`, a noreplace config file, so Fedora's later changes to
+  it arrive as `.rpmnew`. Measured with Firefox 159 and Chromium 156 on fresh
   profiles over two minutes, the policies read from the browsers' own
   policy pages and the locked preferences applied to the profile:
   Firefox contacts only Mozilla's remote settings (certificate
